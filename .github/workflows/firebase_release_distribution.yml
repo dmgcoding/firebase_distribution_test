@@ -40,8 +40,7 @@ jobs:
         FIREBASE_AUTH_JSON: ${{ secrets.FIREBASE_AUTH_JSON }}
       run: |
         echo "${FIREBASE_AUTH_JSON}" > firebase-auth.json
-        firebase auth:login:ci --token "$(cat firebase-auth.json | jq -r .token)"
-        firebase use --add fir-dis-e6703
+        firebase use --add --project "$(cat firebase-auth.json | jq -r .project_id)"
     
     - name: Build APK
       run: flutter build apk --release
