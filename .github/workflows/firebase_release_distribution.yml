@@ -31,14 +31,13 @@ jobs:
     - name: Install Dependencies
       run: flutter pub get
 
-
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
 
-    - name: Authenticate Firebase
-      run: echo "${{ secrets.FIREBASE_AUTH_JSON }}" > $HOME/firebase-auth.json
-      env:
-        GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-auth.json
+    # - name: Authenticate Firebase
+    #   run: echo "${{ secrets.FIREBASE_AUTH_JSON }}" > $HOME/firebase-auth.json
+    #   env:
+    #     GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-auth.json
     
     - name: Build APK
       run: flutter build apk --release
