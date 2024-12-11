@@ -25,6 +25,9 @@ jobs:
       with:
         flutter-version: 'stable'
 
+    - name: Ensure Stable Channel
+      run: flutter channel stable && flutter upgrade
+
     - name: Install Dependencies
       run: flutter pub get
 
