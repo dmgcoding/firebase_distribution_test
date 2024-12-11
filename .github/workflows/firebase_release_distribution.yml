@@ -1,0 +1,42 @@
+name: Build and Distribute release APK for testing
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Distribute APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'
+
+    - name: Install Dependencies
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Authenticate Firebase
+      env:
+        FIREBASE_AUTH_JSON: ${{ secrets.FIREBASE_AUTH_JSON }}
+      run:
+        echo "${FIREBASE_AUTH_JSON}" > firebase-auth.json
+        firebase auth:login --no-localhost
+        firebase use --add fir-dis-e6703
+
+    - name: Upload to Firebase
+      run: firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app 1:976325307025:android:40cd3fc36fc920c163ad30
